@@ -19,6 +19,7 @@ const SideNavbar = () => {
     getUserCreatedLists,
     handleChange,
     listTitle,
+    sendListToFriend,
     setActiveList,
     setInsideList,
     showAlert,
@@ -101,7 +102,7 @@ const SideNavbar = () => {
   return (
     <div
       className={`bg-gray-900 h-screen p-5 pt-8 duration-300 relative 
-      ${open ? "w-72" : "w-20"} `}
+      ${open ? "sm:w-20 md:w-72" : "w-20"} `}
     >
       <BsArrowLeftShort
         className={`bg-white text-blue-900 text-3xl rounded-full absolute  right-0 top-9 border-blue-900 cursor-pointer ${
@@ -209,17 +210,22 @@ const SideNavbar = () => {
                     className={`text-blue-300 text-sm flex relative items-center justify-between gap-x-4 cursor-pointer p-2 px-5 hover:bg-gray-300  hover:text-gray-900 rounded-md ${
                       !open && "hidden"
                     }`}
+                    onClick={() => goInsideList(list._id)}
                   >
                     <Link
                       to="/list"
                       key={index}
                       onClick={() => goInsideList(list._id)}
+                      className="w-full h-full"
                     >
                       {list.listTitle}
                     </Link>
 
-                    <Menu as="div" className="relative w-10 h-10 z-10">
-                      <Menu.Button className="hover:bg-gray-400  rounded-md">
+                    <Menu
+                      as="div"
+                      className=" flex relative items-center justify-center w-10 h-10 z-10"
+                    >
+                      <Menu.Button className="flex items-center justify-center w-6 h-6  hover:bg-gray-900 hover:text-blue-300 rounded-md">
                         <HiDotsHorizontal />
                       </Menu.Button>
 
@@ -232,7 +238,7 @@ const SideNavbar = () => {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute left-0 mt-2 w-56 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="absolute left-0 mt-2 w-36 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                           <div className="px-1 py-1 ">
                             <Menu.Item>
                               {({ active }) => (
@@ -263,7 +269,32 @@ const SideNavbar = () => {
                                 <button
                                   className={`${
                                     active
-                                      ? "bg-violet-500 text-white"
+                                      ? "bg-red-800 text-white"
+                                      : "text-gray-900"
+                                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                  onClick={() => handleDeleteList(list._id)}
+                                >
+                                  {active ? (
+                                    <DeleteActiveIcon
+                                      className="mr-2 h-5 w-5"
+                                      aria-hidden="true"
+                                    />
+                                  ) : (
+                                    <DeleteInactiveIcon
+                                      className="mr-2 h-5 w-5"
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                  Share
+                                </button>
+                              )}
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${
+                                    active
+                                      ? "bg-red-800 text-white"
                                       : "text-gray-900"
                                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                   onClick={() => handleDeleteList(list._id)}
@@ -312,7 +343,7 @@ function EditInactiveIcon(props) {
       <path
         d="M4 13V16H7L16 7L13 4L4 13Z"
         fill="#EDE9FE"
-        stroke="#A78BFA"
+        stroke="#252629"
         strokeWidth="2"
       />
     </svg>
@@ -329,8 +360,8 @@ function EditActiveIcon(props) {
     >
       <path
         d="M4 13V16H7L16 7L13 4L4 13Z"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
+        fill="#252629"
+        stroke="#252629"
         strokeWidth="2"
       />
     </svg>
@@ -399,11 +430,11 @@ function DeleteInactiveIcon(props) {
         width="10"
         height="10"
         fill="#EDE9FE"
-        stroke="#A78BFA"
+        stroke="#252629"
         strokeWidth="2"
       />
-      <path d="M3 6H17" stroke="#A78BFA" strokeWidth="2" />
-      <path d="M8 6V4H12V6" stroke="#A78BFA" strokeWidth="2" />
+      <path d="M3 6H17" stroke="#252629" strokeWidth="2" />
+      <path d="M8 6V4H12V6" stroke="#252629" strokeWidth="2" />
     </svg>
   );
 }
@@ -421,12 +452,12 @@ function DeleteActiveIcon(props) {
         y="6"
         width="10"
         height="10"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
+        fill="#252629"
+        stroke="#252629"
         strokeWidth="2"
       />
-      <path d="M3 6H17" stroke="#C4B5FD" strokeWidth="2" />
-      <path d="M8 6V4H12V6" stroke="#C4B5FD" strokeWidth="2" />
+      <path d="M3 6H17" stroke="#252629" strokeWidth="2" />
+      <path d="M8 6V4H12V6" stroke="#252629" strokeWidth="2" />
     </svg>
   );
 }

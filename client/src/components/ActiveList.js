@@ -87,15 +87,15 @@ const ActiveList = () => {
 
   return (
     <div className=" relative container mx-auto p-6 flex px-4 pb-8 items-start">
-      <div className="grid grid-cols-8 relative items-center justify-between w-full  ">
+      <div className="grid grid-cols-8 relative items-center justify-between w-full">
         <div className="col-start-1 col-end-5 bg-orange-300 flex px-4 pb-8 items-start">
-          <div className=" bg-gray-300 rounded flex-no-shrink w-64 p-2 mr-3">
+          <div className=" bg-gray-300 rounded flex-no-shrink w-full p-2 mr-3 ">
             <div className="flex justify-between py-1 items-center">
-              <h3 className="text-sm">{activeList[0].listTitle}</h3>
+              <h3 className="text-lg">{activeList[0].listTitle}</h3>
               <div className="h-4 fill-current text-gray-dark cursor-pointer">
                 {/* Triple Dot Menu*/}
                 <Menu as="div" className="relative w-10 h-10 z-10">
-                  <Menu.Button className="hover:bg-gray-400  rounded-md">
+                  <Menu.Button className="flex items-center justify-center w-6 h-6 hover:bg-gray-400  rounded-md">
                     <HiDotsHorizontal />
                   </Menu.Button>
 
@@ -108,7 +108,7 @@ const ActiveList = () => {
                     leaveFrom="transform opacity-100 scale-100"
                     leaveTo="transform opacity-0 scale-95"
                   >
-                    <Menu.Items className="absolute left-0 mt-2 w-56 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                    <Menu.Items className="absolute left-0 mt-2 w-36 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <div className="px-1 py-1 ">
                         <Menu.Item>
                           {({ active }) => (
@@ -139,22 +139,23 @@ const ActiveList = () => {
                             <button
                               className={`${
                                 active
-                                  ? "bg-violet-500 text-white"
+                                  ? "bg-red-800 text-white"
                                   : "text-gray-900"
                               } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                              onClick={() => console.log(activeList[0]._id)}
                             >
                               {active ? (
-                                <DuplicateActiveIcon
-                                  className="mr-2 h-5 w-5"
+                                <DeleteActiveIcon
+                                  className="mr-2 h-5 w-5  text-violet-400"
                                   aria-hidden="true"
                                 />
                               ) : (
-                                <DuplicateInactiveIcon
-                                  className="mr-2 h-5 w-5"
+                                <DeleteInactiveIcon
+                                  className="mr-2 h-5 w-5 text-violet-400"
                                   aria-hidden="true"
                                 />
                               )}
-                              Duplicate
+                              Delete
                             </button>
                           )}
                         </Menu.Item>
@@ -187,9 +188,12 @@ const ActiveList = () => {
                     {/* Basic Item + Hover Shown*/}
                     {hover && index === itemIndex ? (
                       <div className="col-start-4 col-end-5  col-span-1 absolute flex  right-0 ">
-                        <Menu as="div" className="relative w-10 h-10 z-10">
+                        <Menu
+                          as="div"
+                          className="relative flex items-center justify-center w-10 h-10 z-10"
+                        >
                           <Menu.Button
-                            className=" mr-3 mb-3 md:mb-0 text-white bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-sm text-sm px-1 py-1 text-center inline-flex items-center"
+                            className=" mr-3 mb-3 md:mb-0 text-white bg-blue-500 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-sm text-sm px-1 py-1 text-center i"
                             onClick={() => {
                               setShowItemOptions(!showItemOptions);
                               setShowTextInput(false);
@@ -207,7 +211,7 @@ const ActiveList = () => {
                             leaveFrom="transform opacity-100 scale-100"
                             leaveTo="transform opacity-0 scale-95"
                           >
-                            <Menu.Items className="absolute left-12  w-56 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                            <Menu.Items className="absolute left-12  w-36 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                               <div className="px-1 py-1 ">
                                 <Menu.Item>
                                   {({ active }) => (
@@ -238,14 +242,14 @@ const ActiveList = () => {
                                     <button
                                       className={`${
                                         active
-                                          ? "bg-violet-500 text-white"
+                                          ? "bg-red-800 text-white"
                                           : "text-gray-900"
                                       } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
                                       onClick={() => handleDeleteItem(item._id)}
                                     >
                                       {active ? (
                                         <DeleteActiveIcon
-                                          className="mr-2 h-5 w-5 text-violet-400"
+                                          className="mr-2 h-5 w-5  text-violet-400"
                                           aria-hidden="true"
                                         />
                                       ) : (
@@ -332,7 +336,7 @@ function EditInactiveIcon(props) {
       <path
         d="M4 13V16H7L16 7L13 4L4 13Z"
         fill="#EDE9FE"
-        stroke="#A78BFA"
+        stroke="#252629"
         strokeWidth="2"
       />
     </svg>
@@ -349,56 +353,8 @@ function EditActiveIcon(props) {
     >
       <path
         d="M4 13V16H7L16 7L13 4L4 13Z"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
-        strokeWidth="2"
-      />
-    </svg>
-  );
-}
-
-function DuplicateInactiveIcon(props) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 4H12V12H4V4Z"
-        fill="#EDE9FE"
-        stroke="#A78BFA"
-        strokeWidth="2"
-      />
-      <path
-        d="M8 8H16V16H8V8Z"
-        fill="#EDE9FE"
-        stroke="#A78BFA"
-        strokeWidth="2"
-      />
-    </svg>
-  );
-}
-
-function DuplicateActiveIcon(props) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 4H12V12H4V4Z"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
-        strokeWidth="2"
-      />
-      <path
-        d="M8 8H16V16H8V8Z"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
+        fill="#252629"
+        stroke="#252629"
         strokeWidth="2"
       />
     </svg>
@@ -419,11 +375,11 @@ function DeleteInactiveIcon(props) {
         width="10"
         height="10"
         fill="#EDE9FE"
-        stroke="#A78BFA"
+        stroke="#252629"
         strokeWidth="2"
       />
-      <path d="M3 6H17" stroke="#A78BFA" strokeWidth="2" />
-      <path d="M8 6V4H12V6" stroke="#A78BFA" strokeWidth="2" />
+      <path d="M3 6H17" stroke="#252629" strokeWidth="2" />
+      <path d="M8 6V4H12V6" stroke="#252629" strokeWidth="2" />
     </svg>
   );
 }
@@ -441,12 +397,12 @@ function DeleteActiveIcon(props) {
         y="6"
         width="10"
         height="10"
-        fill="#8B5CF6"
-        stroke="#C4B5FD"
+        fill="#252629"
+        stroke="#252629"
         strokeWidth="2"
       />
-      <path d="M3 6H17" stroke="#C4B5FD" strokeWidth="2" />
-      <path d="M8 6V4H12V6" stroke="#C4B5FD" strokeWidth="2" />
+      <path d="M3 6H17" stroke="#252629" strokeWidth="2" />
+      <path d="M8 6V4H12V6" stroke="#252629" strokeWidth="2" />
     </svg>
   );
 }
