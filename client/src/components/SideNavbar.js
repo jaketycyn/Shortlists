@@ -29,8 +29,6 @@ const SideNavbar = () => {
   const [open, setOpen] = useState(true);
   const [subMenuOpen, setSubMenuOpen] = useState(false);
 
-  const testitems = ["item1", "item2", "item3"];
-
   //need to figure out where to place these calls and prevent repeated calls
   useEffect(() => {
     getUserCreatedLists();
@@ -130,7 +128,6 @@ const SideNavbar = () => {
         <ul className="pt-2">
           <div>
             <li
-              key={"classiclists"}
               className={`text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-dark-blue  mt-2 ${
                 subMenuOpen && "border-b-2"
               }`}
