@@ -88,7 +88,7 @@ const ActiveList = () => {
   return (
     <div className=" relative container mx-auto p-6 flex px-4 pb-8 items-start">
       <div className="grid grid-cols-8 relative items-center justify-between w-full">
-        <div className="col-start-1 col-end-5 bg-orange-300 flex px-4 pb-8 items-start">
+        <div className="col-start-1 col-end-5  flex px-4 pb-8 items-start">
           <div className=" bg-gray-300 rounded flex-no-shrink w-full p-2 mr-3 ">
             <div className="flex justify-between py-1 items-center">
               <h3 className="text-lg">{activeList[0].listTitle}</h3>
@@ -131,6 +131,31 @@ const ActiveList = () => {
                                 />
                               )}
                               Edit
+                            </button>
+                          )}
+                        </Menu.Item>
+                        <Menu.Item>
+                          {({ active }) => (
+                            <button
+                              className={`${
+                                active
+                                  ? "bg-red-800 text-white"
+                                  : "text-gray-900"
+                              } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                              onClick={() => console.log("sharing item")}
+                            >
+                              {active ? (
+                                <ShareActiveIcon
+                                  className="mr-2 h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              ) : (
+                                <ShareInactiveIcon
+                                  className="mr-2 h-5 w-5"
+                                  aria-hidden="true"
+                                />
+                              )}
+                              Share
                             </button>
                           )}
                         </Menu.Item>
@@ -237,6 +262,7 @@ const ActiveList = () => {
                                     </button>
                                   )}
                                 </Menu.Item>
+
                                 <Menu.Item>
                                   {({ active }) => (
                                     <button
@@ -276,7 +302,7 @@ const ActiveList = () => {
             ) : (
               <div>No items in this list. Please add some below</div>
             )}
-            <a className="text-gray-dark rounded items-center">
+            <div className="my-8  text-gray-dark rounded items-center">
               <span
                 className={`flex items-center justify-center  bg-white p-2 rounded mt-8 border-gray cursor-pointer  hover:bg-gray-400 ${
                   showTextInput && "hidden"
@@ -289,7 +315,7 @@ const ActiveList = () => {
                 Add an item...
               </span>
 
-              <span className={`${!showTextInput && "hidden"}`}>
+              <span className={` ${!showTextInput && "hidden"}`}>
                 <div>
                   <input
                     type="text"
@@ -317,7 +343,7 @@ const ActiveList = () => {
                   </span>
                 </div>
               </span>
-            </a>
+            </div>
           </div>
         </div>
       </div>
@@ -364,22 +390,17 @@ function EditActiveIcon(props) {
 function DeleteInactiveIcon(props) {
   return (
     <svg
-      {...props}
-      viewBox="0 0 20 20"
+      class="h-4 w-4 mr-2 text-black-900"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-      <rect
-        x="5"
-        y="6"
-        width="10"
-        height="10"
-        fill="#EDE9FE"
-        stroke="#252629"
-        strokeWidth="2"
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
       />
-      <path d="M3 6H17" stroke="#252629" strokeWidth="2" />
-      <path d="M8 6V4H12V6" stroke="#252629" strokeWidth="2" />
     </svg>
   );
 }
@@ -387,22 +408,50 @@ function DeleteInactiveIcon(props) {
 function DeleteActiveIcon(props) {
   return (
     <svg
-      {...props}
-      viewBox="0 0 20 20"
+      class="h-4 w-4 mr-2 text-black-900"
       fill="none"
-      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 24 24"
+      stroke="currentColor"
     >
-      <rect
-        x="5"
-        y="6"
-        width="10"
-        height="10"
-        fill="#252629"
-        stroke="#252629"
-        strokeWidth="2"
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        stroke-width="2"
+        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
       />
-      <path d="M3 6H17" stroke="#252629" strokeWidth="2" />
-      <path d="M8 6V4H12V6" stroke="#252629" strokeWidth="2" />
+    </svg>
+  );
+}
+
+function ShareActiveIcon(props) {
+  return (
+    <svg
+      class="h-4 w-4 mr-2 text-black-900"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      {" "}
+      <polygon points="3 11 22 2 13 21 11 13 3 11" />
+    </svg>
+  );
+}
+function ShareInactiveIcon(props) {
+  return (
+    <svg
+      class="h-4 w-4 mr-2 text-black-900"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      {" "}
+      <polygon points="3 11 22 2 13 21 11 13 3 11" />
     </svg>
   );
 }

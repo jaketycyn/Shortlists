@@ -27,8 +27,8 @@ const SideNavbar = () => {
     userContributorList,
   } = useAppContext();
   const [open, setOpen] = useState(true);
+  const [showListTitleInput, setShowListTitleInput] = useState(false);
   const [subMenuOpen, setSubMenuOpen] = useState(false);
-
   //need to figure out where to place these calls and prevent repeated calls
   useEffect(() => {
     getUserCreatedLists();
@@ -54,7 +54,6 @@ const SideNavbar = () => {
   };
 
   const handleSubmitList = async (e) => {
-    e.preventDefault();
     if (!listTitle) {
       displayAlert();
       return;
@@ -83,24 +82,12 @@ const SideNavbar = () => {
   const UserClassicLists = userContributorList.filter(
     (item) => item.contributors.length === 1
   );
-  // console.log("userContributorList");
-  // console.log(userContributorList);
-  //End of List Info
-
-  // const UserClassicLists = [
-  //   {
-  //     listTitle: "title1",
-  //     author: "author1",
-  //     items: ["item1", "item2", "item3"],
-  //   },
-  //   { listTitle: "title2", author: "author2" },
-  //   { listTitle: "title3", author: "author3" },
-  // ];
 
   return (
     <div
       className={`bg-gray-900 h-screen p-5 pt-8 duration-300 relative 
       ${open ? "sm:w-20 md:w-72" : "w-20"} `}
+      onMouseLeave={() => setShowListTitleInput(false)}
     >
       <BsArrowLeftShort
         className={`bg-white text-blue-900 text-3xl rounded-full absolute  right-0 top-9 border-blue-900 cursor-pointer ${
@@ -147,18 +134,6 @@ const SideNavbar = () => {
                 Classic Lists
               </span>
 
-              <button
-                id="dropdownBottomButton"
-                data-dropdown-toggle="dropdownBottom"
-                data-dropdown-placement="bottom"
-                className={` mr-3 mb-3 md:mb-0 text-white  hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-sm text-sm px-4 py-2.5 text-center inline-flex items-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 ${
-                  !open && "hidden"
-                }`}
-                type="button"
-                //onClick={() => setSubMenuOpen(true)}
-              >
-                <BsPlusLg className={` ${!open && "hidden"}`} />
-              </button>
               <div
                 id="dropdownBottom"
                 className="hidden p-4 w-full max-w-sm  border  shadow-md divide-y divide-gray-100 sm:p-6 md:p-8 bg-gray-800 border-gray-700"
@@ -190,7 +165,8 @@ const SideNavbar = () => {
                       <span className="mt-6 flex  items-center justify-center ">
                         <button
                           className="text-white  bg-green-500 hover:bg-green-800 focus:ring-4 focus:outline-none focus:ring-green-300 font-medium rounded-sm text-sm px-4 py-3 text-center  dark:bg-green-600 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                          onClick={() => handleSubmitList}
+                          type="submit"
+                          onClick={(e) => handleSubmitList(e)}
                         >
                           Add List
                         </button>
@@ -272,12 +248,12 @@ const SideNavbar = () => {
                                   onClick={() => handleDeleteList(list._id)}
                                 >
                                   {active ? (
-                                    <DeleteActiveIcon
+                                    <ShareActiveIcon
                                       className="mr-2 h-5 w-5"
                                       aria-hidden="true"
                                     />
                                   ) : (
-                                    <DeleteInactiveIcon
+                                    <ShareInactiveIcon
                                       className="mr-2 h-5 w-5"
                                       aria-hidden="true"
                                     />
@@ -320,9 +296,61 @@ const SideNavbar = () => {
               </ul>
             )}
           </div>
+
+          {/* Add List Module*/}
+          <li className={`${!open && "hidden"}`}>
+            <div
+              className="flex items-center justify-center text-gray-800 rounded"
+              //?Commenting out for now kinda annoying for new users and wont work on mobile anyway
+              //onMouseLeave={() => setShowListTitleInput(false)}
+              //onMouseEnter={() => setSubMenuOpen(true)}
+            >
+              <span
+                className={` p-2 rounded mt-8  cursor-pointer bg-gray-400 hover:bg-blue-800 ${
+                  showListTitleInput && "hidden"
+                }`}
+                onClick={() => {
+                  setShowListTitleInput(!showListTitleInput);
+                  setSubMenuOpen(true);
+                }}
+              >
+                Add a list...
+              </span>
+              <span className={`${!showListTitleInput && "hidden"}`}>
+                <div>
+                  <input
+                    type="text"
+                    id="listTitle"
+                    className="block h-20 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 "
+                    name="listTitle"
+                    value={listTitle}
+                    onChange={handleListTitleInput}
+                    required
+                  />
+
+                  <span className="flex items-center justify-center my-4">
+                    <button
+                      className="bg-green-500 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-log text-sm px-4 py-2.5 text-center"
+                      onClick={handleSubmitList}
+                    >
+                      Add List
+                    </button>
+                  </span>
+                  <span className="flex items-center justify-center my-4">
+                    <button
+                      className="bg-red-500 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-log text-sm px-4 py-2.5 text-center"
+                      onClick={() => setShowListTitleInput(!showListTitleInput)}
+                    >
+                      Cancel
+                    </button>
+                  </span>
+                </div>
+              </span>
+            </div>
+          </li>
         </ul>
       </div>
-      <div className="capitalize text-white flex text-base font-medium flex-1">
+      <div className="capitalize text-white flex text-base font-medium flex-1 my-20 ">
         {user.name}
       </div>
     </div>
@@ -455,6 +483,39 @@ function DeleteActiveIcon(props) {
       />
       <path d="M3 6H17" stroke="#252629" strokeWidth="2" />
       <path d="M8 6V4H12V6" stroke="#252629" strokeWidth="2" />
+    </svg>
+  );
+}
+
+function ShareActiveIcon(props) {
+  return (
+    <svg
+      class="h-4 w-4 mr-2 text-black-900"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      {" "}
+      <polygon points="3 11 22 2 13 21 11 13 3 11" />
+    </svg>
+  );
+}
+function ShareInactiveIcon(props) {
+  return (
+    <svg
+      class="h-4 w-4 mr-2 text-black-900"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+    >
+      {" "}
+      <polygon points="3 11 22 2 13 21 11 13 3 11" />
     </svg>
   );
 }

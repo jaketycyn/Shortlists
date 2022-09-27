@@ -5,8 +5,9 @@ module.exports = {
 
   content: [
     "./public/**/*.html",
-    "./src/**/*.{js,jsx,ts,tsx,vue}",
+    "./src/**/*.{js,jsx,ts,tsx}",
     "./node_modules/flowbite/**/*.js",
+    "node_modules/flowbite-react/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
     screens: {
