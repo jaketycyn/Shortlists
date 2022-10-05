@@ -53,6 +53,10 @@ const SideNavbar = () => {
     handleChange({ name, value });
   };
 
+  const testCommitFunction = () => {
+    console.log("testing stuff");
+  };
+
   const handleSubmitList = async (e) => {
     if (!listTitle) {
       displayAlert();
