@@ -1,9 +1,12 @@
-import { Fragment, useEffect, useState, useRef } from "react";
+import { React, Fragment, useEffect, useState, useRef } from "react";
 
 import { useAppContext } from "../context/appContext";
 
 import { HiDotsHorizontal, HiPlus, HiOutlinePencil } from "react-icons/hi";
-import { Menu, Transition } from "@headlessui/react";
+
+import { Dialog, Menu, Transition } from "@headlessui/react";
+
+import { Modal, Button } from "flowbite-react";
 
 import { BsArrowLeftShort, BsChevronDown, BsPlusLg } from "react-icons/bs";
 import { ImBooks } from "react-icons/im";
@@ -28,6 +31,7 @@ const SideNavbar = () => {
   } = useAppContext();
   const [open, setOpen] = useState(true);
   const [showListTitleInput, setShowListTitleInput] = useState(false);
+  const [showShareForm, setShowShareForm] = useState(false);
   const [subMenuOpen, setSubMenuOpen] = useState(false);
   //need to figure out where to place these calls and prevent repeated calls
   useEffect(() => {
@@ -51,10 +55,6 @@ const SideNavbar = () => {
     const value = e.target.value;
     // console.log(`${name}: ${value}`)
     handleChange({ name, value });
-  };
-
-  const testCommitFunction = () => {
-    console.log("testing stuff");
   };
 
   const handleSubmitList = async (e) => {
@@ -89,25 +89,20 @@ const SideNavbar = () => {
 
   return (
     <div
-      className={`bg-gray-900 h-screen p-5 pt-8 duration-300 relative 
-      ${open ? "sm:w-20 md:w-72" : "w-20"} `}
+      className={`bg-gray-900 h-screen p-5 pt-8 duration-300 relative w-4/5
+      ${open ? "sm:w-4/5 md:w-4/5" : "w-4/5"} `}
       onMouseLeave={() => setShowListTitleInput(false)}
     >
       <BsArrowLeftShort
-        className={`bg-white text-blue-900 text-3xl rounded-full absolute  right-0 top-9 border-blue-900 cursor-pointer ${
+        className={`bg-white text-blue-900 text-3xl rounded-full absolute outline outline-2 -right-4 top-9 border-gray-900 outline-gray-900 cursor-pointer ${
           !open && "rotate-180"
         }`}
         onClick={() => setOpen(!open)}
       />
       <div className="flex">
         <Link to="/">
-          <ImBooks
-            className={` bg-white text-4xl rounded cursor-pointer block float-left duration-400 mr-4 ${
-              !open && "rounded-full"
-            }`}
-          />
           <h1
-            className={`text-white origin-left font-medium text-3xl duration-300 ${
+            className={`text-white origin-left font-medium text-3xl duration-300 w-60 ${
               !open && "hidden"
             } `}
           >
@@ -140,7 +135,9 @@ const SideNavbar = () => {
 
               <div
                 id="dropdownBottom"
-                className="hidden p-4 w-full max-w-sm  border  shadow-md divide-y divide-gray-100 sm:p-6 md:p-8 bg-gray-800 border-gray-700"
+                className={`hidden p-4 w-full max-w-sm  border  shadow-md divide-y divide-gray-100 sm:p-6 md:p-8 bg-gray-800 border-gray-700 ${
+                  !open && "hidden"
+                }`}
 
                 //p-4 w-full max-w-sm bg-white rounded-lg border border-gray-200 shadow-md sm:p-6 md:p-8 dark:bg-gray-800 dark:border-gray-700
               >
@@ -200,9 +197,9 @@ const SideNavbar = () => {
 
                     <Menu
                       as="div"
-                      className=" flex relative items-center justify-center w-10 h-10 z-10"
+                      className=" flex relative items-center justify-center w-10 h-10"
                     >
-                      <Menu.Button className="flex items-center justify-center w-6 h-6  hover:bg-gray-900 hover:text-blue-300 rounded-md">
+                      <Menu.Button className="flex items-center justify-center w-6 h-6  hover:bg-gray-900 hover:text-blue-300 rounded-md z-0">
                         <HiDotsHorizontal />
                       </Menu.Button>
 
@@ -215,7 +212,7 @@ const SideNavbar = () => {
                         leaveFrom="transform opacity-100 scale-100"
                         leaveTo="transform opacity-0 scale-95"
                       >
-                        <Menu.Items className="absolute left-0 mt-2 w-36 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                        <Menu.Items className="absolute left-0 mt-2 w-36 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none z-10">
                           <div className="px-1 py-1 ">
                             <Menu.Item>
                               {({ active }) => (
@@ -249,20 +246,28 @@ const SideNavbar = () => {
                                       ? "bg-red-800 text-white"
                                       : "text-gray-900"
                                   } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                                  onClick={() => handleDeleteList(list._id)}
+                                  onClick={
+                                    () =>
+                                      console.log(
+                                        setShowShareForm(!showShareForm)
+                                      )
+                                    //fire module screen
+                                    //share list._id to email provided on module
+                                    //create item for user_Id that exists for email that exists.
+                                  }
                                 >
                                   {active ? (
                                     <ShareActiveIcon
-                                      className="mr-2 h-5 w-5"
+                                      className="mr-2 h-5 w-5 "
                                       aria-hidden="true"
                                     />
                                   ) : (
                                     <ShareInactiveIcon
-                                      className="mr-2 h-5 w-5"
+                                      className="mr-2 h-5 w-5 bg-pink-400"
                                       aria-hidden="true"
                                     />
                                   )}
-                                  Share
+                                  share
                                 </button>
                               )}
                             </Menu.Item>
@@ -354,7 +359,69 @@ const SideNavbar = () => {
           </li>
         </ul>
       </div>
-      <div className="capitalize text-white flex text-base font-medium flex-1 my-20 ">
+
+      <Transition.Root show={showShareForm} as={Fragment}>
+        <Dialog as="div" className="relative z-10" onClose={setOpen}>
+          <Transition.Child
+            as={Fragment}
+            enter="ease-out duration-300"
+            enterFrom="opacity-0"
+            enterTo="opacity-100"
+            leave="ease-in duration-200"
+            leaveFrom="opacity-100"
+            leaveTo="opacity-0"
+          >
+            <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" />
+          </Transition.Child>
+
+          <div className="fixed inset-0 z-10 overflow-y-auto">
+            <div className="flex min-h-full items-end justify-center p-4 text-center sm:items-center sm:p-0">
+              <Transition.Child
+                as={Fragment}
+                enter="ease-out duration-300"
+                enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+                enterTo="opacity-100 translate-y-0 sm:scale-100"
+                leave="ease-in duration-200"
+                leaveFrom="opacity-100 translate-y-0 sm:scale-100"
+                leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+              >
+                <div className="bg-gray-50 px-4 py-3 sm:flex sm:flex-row-reverse sm:px-6">
+                  <div className="col-span-3 sm:col-span-2">
+                    <label
+                      htmlFor="company-website"
+                      className="block text-sm font-medium text-gray-700"
+                    >
+                      Share with a Friend
+                    </label>
+                    <div className="mt-1 flex rounded-md shadow-sm ">
+                      <input
+                        type="text"
+                        name="company-website"
+                        id="company-website"
+                        className="block w-full flex-1 rounded-none rounded-r-md border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+                        placeholder="Add email"
+                      />
+                      <button
+                        type="button"
+                        className="inline-flex w-full h-2justify-center rounded-md border border-transparent bg-blue-500 px-4 py-2 text-base font-medium text-white shadow-sm hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 sm:ml-3 sm:w-auto sm:text-sm"
+                        onClick={() => setShowShareForm(false)}
+                      >
+                        Share
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </Transition.Child>
+            </div>
+          </div>
+        </Dialog>
+      </Transition.Root>
+
+      <div
+        className={`capitalize flex text-base text-white font-medium flex-1 my-20  ${
+          !open && "hidden"
+        }`}
+      >
         {user.name}
       </div>
     </div>
@@ -498,9 +565,9 @@ function ShareActiveIcon(props) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
       {" "}
       <polygon points="3 11 22 2 13 21 11 13 3 11" />
@@ -514,9 +581,9 @@ function ShareInactiveIcon(props) {
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     >
       {" "}
       <polygon points="3 11 22 2 13 21 11 13 3 11" />
