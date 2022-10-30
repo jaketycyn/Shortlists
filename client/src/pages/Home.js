@@ -561,7 +561,7 @@ const Home = () => {
       {/* AddItemOrList Component End*/}
       {/* Footer: Start*/}
       {/* Look into Changing the Height of the Nav Item */}
-      <div className="flex sticky bottom-0 w-full text-center border-t border-grey items-center z-10 bg-white">
+      <div className="flex absolute bottom-0 w-full text-center border-t border-grey items-center z-10 bg-white">
         <FooterNav />
       </div>
       {/* Footer: End*/}
