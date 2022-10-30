@@ -37,6 +37,8 @@ const Home = () => {
 
   // subMenu State & Functions
   const [subMenuIndexes, setSubMenuIndexes] = useState([]);
+  const [userListsOpen, setUserListsOpen] = useState(true);
+  const [userReceivedListsOpen, setUserReceivedListsOpen] = useState(true);
   //const [subMenuIndex, setSubMenuIndex] = useState();
 
   const toggleSubMenu = (index, subMenuIndexes) => {
@@ -109,34 +111,56 @@ const Home = () => {
   );
 
   return (
-    <div className="flex flex-col h-screen justify-between ">
+    <div className="flex flex-col h-screen justify-between gap-2  ">
       <div className="" onClick={() => setAddItemOrList(false)}>
-        <header className="flex flex-col sticky top-0 w-full h-14 text-center items-center border-2 z-10 bg-white  p-2">
+        <header className="flex flex-col absolute top-0 w-full h-14 mb-2  text-center items-center border-2 z-10 bg-white  pt-4">
           <h1 className="font-semibold">Shortlists</h1>
           {/* Setup Grid - layout later for spacing of Back, list name, share icon & more options icon w/ redirect to options page like Notion*/}
         </header>
 
-        <div className="flex items-center rounded-md text-black z-0">
-          <ul className="pt-2">
+        <div className="flex flex-col items-center rounded-md text-black m-2 z-0 ">
+          <ul className="pt-2 w-5/6 ">
+            {/* My Lists Button: Begin*/}
+            <div className=" flex flex-col items-center text-center ">
+              <button
+                className={`grid grid-rows-1 grid-cols-4  mt-12 h-30 w-1/2 font-semibold items-center text-center border-2 border-slate-400 rounded-lg ${
+                  !userListsOpen && "bg-gray-300"
+                }`}
+                onClick={() => setUserListsOpen(!userListsOpen)}
+              >
+                <HiOutlineChevronRight
+                  //index + 1 needed because for some reason index at 0 was never found even with it being hard coded in.
+                  className={`grid row-start-1 row-span-1 col-start-1 col-span-1 m-2 ${
+                    userListsOpen && "rotate-90"
+                  } `}
+                />
+
+                <h1 className="grid row-start-1 row-span-1 col-start-2 col-span-2">
+                  My lists
+                </h1>
+              </button>
+            </div>
+            {/* My Lists Button: End*/}
+
+            {/* Display UserClassicLists Module: Begins*/}
             <div // controls opacity of rest of active list when add item/list is selected
-              className={`flex relative container mx-auto p-6 px-4 pb-8 items-start h-full z-0 ${
+              className={` h-full relative items-center container z-0 ${
                 addItemOrList && "opacity-30"
               }`}
             >
-              {/* Display UserClassicLists Module: Begin*/}
-              {UserClassicLists.length >= 1 && (
-                <ul>
+              {UserClassicLists.length >= 1 && userListsOpen && (
+                <ul className="snap-x">
                   {UserClassicLists.map((list, index) => (
                     <div
-                      className="text-black text-sm flex relative  items-center justify-between gap-x-4 cursor-pointer p-2 px-5 border-2 border-gray-600 mt-2 hover:bg-gray-300  hover:text-gray-900 rounded-md"
+                      className="text-black text-sm flex relative  items-center justify-between gap-x-2 cursor-pointer border-2 border-gray-600 mt-2  hover:bg-gray-300  hover:text-gray-900 rounded-md snap-center"
                       //! removing connection for now - want to allow items to quick add from main menu
                       // onClick={() => goInsideList(list._id)}
                       key={index}
                     >
-                      <button>
+                      <button className="w-10 h-10 p-2 bg-gray-200 flex relative items-center">
                         <HiOutlineChevronRight
                           //index + 1 needed because for some reason index at 0 was never found even with it being hard coded in.
-                          className={`${
+                          className={`w-4 h-4 ${
                             subMenuIndexes.find((i) => i === index + 1) &&
                             "rotate-90"
                           } `}
@@ -149,17 +173,17 @@ const Home = () => {
                         to="/list"
                         key={index}
                         onClick={() => goInsideList(list._id)}
-                        className="w-full h-full"
+                        className="w-full h-full bg-yellow-400 p-2"
                       >
                         {list.listTitle}
                       </Link>
 
                       <Menu
                         as="div"
-                        className=" flex relative items-center justify-center w-10 h-10"
+                        className=" flex relative items-center justify-center "
                       >
-                        <Menu.Button className="flex items-center justify-center w-6 h-6  hover:bg-gray-900 hover:text-blue-300 rounded-md z-0">
-                          <HiOutlineDotsVertical />
+                        <Menu.Button className="flex items-center justify-center w-8 h-8 bg-purple-400  hover:bg-gray-900 hover:text-blue-300 rounded-md z-0">
+                          <HiOutlineDotsVertical className="" />
                         </Menu.Button>
 
                         <Transition
@@ -181,6 +205,9 @@ const Home = () => {
                                         ? "bg-violet-500 text-white"
                                         : "text-gray-900"
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                    onClick={() =>
+                                      console.log("Edit - Triple Dot Clicked")
+                                    }
                                   >
                                     {active ? (
                                       <EditActiveIcon
@@ -208,7 +235,7 @@ const Home = () => {
                                     onClick={
                                       () =>
                                         console.log(
-                                          setShowShareForm(!showShareForm)
+                                          "Share List - Triple Dot Clicked"
                                         )
                                       //fire module screen
                                       //share list._id to email provided on module
@@ -259,8 +286,11 @@ const Home = () => {
                           </Menu.Items>
                         </Transition>
                       </Menu>
-                      <div className="flex items-center justify-center w-6 h-6  hover:bg-gray-900 hover:text-blue-300 rounded-md z-0">
-                        <HiPlus onClick={() => console.log("add item")} />
+                      <div className="flex items-center justify-center  p-2 hover:bg-gray-900 h-8 w-8 bg-red-400 rounded-md z-0">
+                        <HiPlus
+                          className="h-4 w-4"
+                          onClick={() => console.log("add item")}
+                        />
                       </div>
                     </div>
                   ))}
@@ -268,29 +298,47 @@ const Home = () => {
               )}
               {/* Display UserClassicLists Module: End*/}
             </div>
+            {/* My Lists Button: Begin*/}
+            <div className=" flex flex-col items-center text-center ">
+              <button
+                className={`grid grid-rows-1 grid-cols-4  mt-12 h-30 w-1/2 font-semibold items-center text-center border-2 border-slate-400 rounded-lg ${
+                  !userReceivedListsOpen && "bg-gray-300"
+                }`}
+                onClick={() => setUserReceivedListsOpen(!userReceivedListsOpen)}
+              >
+                <HiOutlineChevronRight
+                  //index + 1 needed because for some reason index at 0 was never found even with it being hard coded in.
+                  className={`grid row-start-1 row-span-1 col-start-1 col-span-1 m-2 ${
+                    userReceivedListsOpen && "rotate-90"
+                  } `}
+                />
 
-                    {/* hi dad can you see this comment*/ }
-            {/* Display UserReceivedSocialLists Module: Begin}
-              <div // controls opacity of rest of active list when add item/list is selected
-              className={`flex relative container mx-auto p-6 px-4 pb-8 items-start z-0  h-screen w-full ${
+                <h1 className="grid row-start-1 row-span-1 col-start-2 col-span-2">
+                  Others
+                </h1>
+              </button>
+            </div>
+            {/* My Lists Button: End*/}
+
+            {/* Display UserSocialLists Module: Begins*/}
+            <div // controls opacity of rest of active list when add item/list is selected
+              className={` h-full relative items-center container pb-20 pt-12 z-0 ${
                 addItemOrList && "opacity-30"
               }`}
-              onClick={() => setAddItemOrList(false)}
             >
-              <h1>Received Lists Divide</h1>
-              {UserReceivedSocialLists.length >= 1 && (
+              {UserReceivedSocialLists.length >= 1 && userReceivedListsOpen && (
                 <ul>
                   {UserReceivedSocialLists.map((list, index) => (
                     <div
-                      className="text-black text-sm flex relative  items-center justify-between gap-x-4 cursor-pointer p-2 px-5 hover:bg-gray-300  hover:text-gray-900 rounded-md"
+                      className="text-black text-sm flex relative  items-center justify-between gap-x-2 cursor-pointer border-2 border-gray-600 mt-2 hover:bg-gray-300  hover:text-gray-900 rounded-md"
                       //! removing connection for now - want to allow items to quick add from main menu
                       // onClick={() => goInsideList(list._id)}
                       key={index}
                     >
-                      <button>
+                      <button className="w-10 h-10 p-2 bg-gray-200 flex relative items-center">
                         <HiOutlineChevronRight
                           //index + 1 needed because for some reason index at 0 was never found even with it being hard coded in.
-                          className={`${
+                          className={`w-4 h-4 ${
                             subMenuIndexes.find((i) => i === index + 1) &&
                             "rotate-90"
                           } `}
@@ -303,17 +351,17 @@ const Home = () => {
                         to="/list"
                         key={index}
                         onClick={() => goInsideList(list._id)}
-                        className="w-full h-full"
+                        className="w-full h-full bg-yellow-400 p-2"
                       >
                         {list.listTitle}
                       </Link>
 
                       <Menu
                         as="div"
-                        className=" flex relative items-center justify-center w-10 h-10"
+                        className=" flex relative items-center justify-center "
                       >
-                        <Menu.Button className="flex items-center justify-center w-6 h-6  hover:bg-gray-900 hover:text-blue-300 rounded-md z-0">
-                          <HiOutlineDotsVertical />
+                        <Menu.Button className="flex items-center justify-center w-8 h-8 bg-purple-400  hover:bg-gray-900 hover:text-blue-300 rounded-md z-0">
+                          <HiOutlineDotsVertical className="" />
                         </Menu.Button>
 
                         <Transition
@@ -335,6 +383,9 @@ const Home = () => {
                                         ? "bg-violet-500 text-white"
                                         : "text-gray-900"
                                     } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                    onClick={() =>
+                                      console.log("Edit - Triple Dot Clicked")
+                                    }
                                   >
                                     {active ? (
                                       <EditActiveIcon
@@ -362,7 +413,7 @@ const Home = () => {
                                     onClick={
                                       () =>
                                         console.log(
-                                          setShowShareForm(!showShareForm)
+                                          "Share List - Triple Dot Clicked"
                                         )
                                       //fire module screen
                                       //share list._id to email provided on module
@@ -413,69 +464,18 @@ const Home = () => {
                           </Menu.Items>
                         </Transition>
                       </Menu>
-                      <div className="flex items-center justify-center w-6 h-6  hover:bg-gray-900 hover:text-blue-300 rounded-md z-0">
-                        <HiPlus onClick={() => console.log("add item")} />
+                      <div className="flex items-center justify-center  p-2 hover:bg-gray-900 h-8 w-8 bg-red-400 rounded-md z-0">
+                        <HiPlus
+                          className="h-4 w-4"
+                          onClick={() => console.log("add item")}
+                        />
                       </div>
                     </div>
                   ))}
                 </ul>
               )}
             </div>
-            { Display UserReceivedSocialLists Module: End */}
-
-            {/* Add List Module*/}
-            {/*
-          <li>
-            <div
-              className="flex items-center justify-center text-gray-800 rounded"
-              //?Commenting out for now kinda annoying for new users and wont work on mobile anyway
-              //onMouseLeave={() => setShowListTitleInput(false)}
-              //onMouseEnter={() => setSubMenuIndexes(true)}
-            >
-              <span
-                className={` p-2 rounded mt-8  cursor-pointer bg-gray-400 hover:bg-blue-800 ${
-                  showListTitleInput && "hidden"
-                }`}
-                onClick={() => {
-                  setShowListTitleInput(!showListTitleInput);
-                  setSubMenuIndexes(true);
-                }}
-              >
-                Add a list...
-              </span>
-              <span className={`${!showListTitleInput && "hidden"}`}>
-                <div>
-                  <input
-                    type="text"
-                    id="listTitle"
-                    className="block h-20 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 p-2.5 "
-                    name="listTitle"
-                    value={listTitle}
-                    onChange={handleListTitleInput}
-                    required
-                  />
-
-                  <span className="flex items-center justify-center my-4">
-                    <button
-                      className="bg-green-500 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-log text-sm px-4 py-2.5 text-center"
-                      onClick={handleSubmitList}
-                    >
-                      Add List
-                    </button>
-                  </span>
-                  <span className="flex items-center justify-center my-4">
-                    <button
-                      className="bg-red-500 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-log text-sm px-4 py-2.5 text-center"
-                      onClick={() => setShowListTitleInput(!showListTitleInput)}
-                    >
-                      Cancel
-                    </button>
-                  </span>
-                </div>
-              </span>
-            </div>
-          </li>
-        */}
+            {/* Display UserSocialLists Module: End*/}
           </ul>
         </div>
 
@@ -562,7 +562,7 @@ const Home = () => {
       {/* AddItemOrList Component End*/}
       {/* Footer: Start*/}
       {/* Look into Changing the Height of the Nav Item */}
-      <div className="flex absolute bottom-0 w-full text-center border-t border-grey items-center z-10 bg-white">
+      <div className="flex absolute bottom-0 w-full text-center border-t border-grey items-center z-40 bg-white">
         <FooterNav />
       </div>
       {/* Footer: End*/}
@@ -703,7 +703,7 @@ function DeleteActiveIcon(props) {
 function ShareActiveIcon(props) {
   return (
     <svg
-      class="h-4 w-4 mr-2 text-black-900"
+      className="h-4 w-4 mr-2 text-black-900"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -719,7 +719,7 @@ function ShareActiveIcon(props) {
 function ShareInactiveIcon(props) {
   return (
     <svg
-      class="h-4 w-4 mr-2 text-black-900"
+      className="h-4 w-4 mr-2 text-black-900"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"

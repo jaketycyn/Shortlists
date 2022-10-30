@@ -516,21 +516,23 @@ const AppProvider = ({ children }) => {
   const sendListToFriend = async () => {
     const { activeList, friendTitle, userCreatedItems } = state;
     const sentListTitle = activeList[0].listTitle;
+    //console.log("sentListTitle: " + sentListTitle);
     const activeListId = activeList[0]._id;
+    //console.log("activeListId: " + activeListId);
     const listCreatorId = activeList[0].createdById;
-    console.log("activeListId: " + activeListId);
+    //console.log("listCreatorId: " + listCreatorId);
+
     try {
       //TODO: can make userIdentifier the global state tracker in future
       const userIdentifier = friendTitle;
-      console.log("userIdentifier " + userIdentifier);
+      //console.log("userIdentifier " + userIdentifier);
       //dispatch({ type: GET_USER_ID})
 
       //!FIND USER
       const { data } = await authFetch.get(`/auth/finduser/${userIdentifier}`);
       const friendIdentifier = data.foundUser._id;
 
-      console.log("friendIdentifier " + friendIdentifier);
-      console.log(friendIdentifier);
+      //console.log("friendIdentifier " + friendIdentifier);
 
       //!CREATE COPY LIST
       await authFetch.post("/userlists/createSentList", {
@@ -538,11 +540,14 @@ const AppProvider = ({ children }) => {
         listCreatorId,
         sentListTitle,
       });
+      //console.log("create copy list fired");
 
       //!GET COPY LIST ID
       const returnData = await authFetch.get(
         `/userlists/createSentList/${friendIdentifier}/${listCreatorId}/${sentListTitle}`
       );
+      console.log("get copy list fired");
+      console.log("returnData.data._id");
       console.log(returnData.data._id);
 
       const sentListId = returnData.data._id;

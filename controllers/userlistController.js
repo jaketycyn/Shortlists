@@ -144,15 +144,15 @@ const createSentList = async (req, res) => {
 const getSentListId = async (req, res) => {
   // params we have access too:
   // friendIdentifier,
-  // listCreatorId,
-  // sentListTitle,
-
-  // console.log("req.params.friendIdentifier " + req.params.friendIdentifier);
-  // console.log(req.params);
+  //   listCreatorId,
+  //   sentListTitle,
+  console.log("getSentListId - fired db side");
+  console.log("req.params.friendIdentifier " + req.params.friendIdentifier);
+  console.log("req.params: " + JSON.stringify(req.params, 0, 2));
 
   const sentListId = await UserCustomList.findOne({
-    createdById: req.params.listCreatorId,
     ownerId: req.params.friendIdentifier,
+    createdById: req.params.listCreatorId,
     listTitle: req.params.sentListTitle,
   });
 
