@@ -117,6 +117,7 @@ const createSentList = async (req, res) => {
   //res.send("createSentList");
   const { sentListTitle, listCreatorId, friendIdentifier } = req.body;
 
+  console.log("createSentList - Fired");
   console.log("req.body");
   console.log(req.body);
   console.log("sentListTitle " + sentListTitle);

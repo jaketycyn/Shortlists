@@ -1,53 +1,34 @@
-import { Navigate, Routes, Route } from "react-router-dom";
-
-import { SideNavbar } from "../components";
-
+import { Routes, Route } from "react-router-dom";
 import Home from "./Home";
-
 import ActiveList from "../components/ActiveList";
-import Error from "./Error";
+import AddItem from "../components/AddItem";
+import AddList from "../components/AddList";
+import Share from "../components/Share";
 
-// import UserListClassic from "../../components/UserListClassic";
-// import UserListSocial from "../../components/UserListSocial.js";
-// import UserListReceived from "../../components/UserListReceived";
+//? Moved FootNav into individual components that need it.
+//import FooterNav from "../components/FooterNav";
 
+import NoMatch from "./NoMatch";
+
+//!Reminder that any route existing here needs to also exist as within the App.js file
+//? Need to learn why they must both exist for the route to work. Assumption is a generic route has to exist for the browser router to assign but also it has to exist within the protected route.
 const SharedLayout = () => {
   return (
-    <div className="flex">
-      <aside className="h-screen sticky top-0">
-        <SideNavbar />
-      </aside>
+    /* New Mobile First Scheme*/
 
-      <main className="bg-backBlue flex flex-1 overflow-y-auto paragraph px-4">
+    <div className="flex flex-col overflow-x-hidden  h-screen">
+      <main className="bg-backBlue grow flex-1  ">
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/list" element={<ActiveList />} />
-          <Route path="*" element={<Error />} />
+          <Route exact path="/" element={<Home />} />
+          <Route exact path="list" element={<ActiveList />} />
+          <Route exact path="add-list" element={<AddList />} />
+          <Route exact path="add-item" element={<AddItem />} />
+          <Route exact path="share-list" element={<Share />} />
+          <Route path="*" element={<NoMatch />} />
         </Routes>
       </main>
     </div>
   );
 };
-
-//tailwindcss setup1
-// <main className="relative flex-col h-screen">
-//       <div className="flex flex-1 overflow-hidden">
-//         <div className="flex bg-gray-100 w-32 p-4">
-//           <SideNavbar />
-//         </div>
-
-//         <div className="flex flex-1 bg-blue-300 overflow-y-auto paragraph px-4">
-//           <Routes>
-//             <Route path="/" element={<Home />} />
-//             <Route path="/list" element={<ActiveList />} />
-//             <Route path="*" element={<Error />} />
-//           </Routes>
-//         </div>
-//       </div>
-//     </main>
-
-// <Route path="/mylists/classic" element={<UserListClassic />} />
-//           <Route path="/mylists/social" element={<UserListSocial />} />
-//           <Route path="/mylists/received" element={<UserListReceived />} />
 
 export default SharedLayout;

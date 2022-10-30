@@ -1,7 +1,7 @@
 import Landing from "./Landing";
-import Error from "./Error";
+import NoMatch from "./NoMatch";
 import Register from "./Register";
 import ProtectedRoute from "./ProtectedRoute";
 import SharedLayout from "./SharedLayout";
 
-export { Landing, Error, Register, ProtectedRoute, SharedLayout };
+export { Landing, NoMatch, Register, ProtectedRoute, SharedLayout };

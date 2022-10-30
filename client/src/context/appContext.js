@@ -23,6 +23,7 @@ import {
   SET_INSIDE_LIST,
   SET_CURRENT_USER_LIST_ITEMS,
   //USER ITEMS
+  SET_ADD_ITEM_OR_LIST,
   SET_DELETE_ITEM_ID,
   CREATE_USER_LIST_ITEM_BEGIN,
   CREATE_USER_LIST_ITEM_SUCCESS,
@@ -40,33 +41,29 @@ const user = localStorage.getItem("user");
 const initialState = {
   //login/register initial state
   isLoading: false,
-  showAlert: false,
   alertText: "",
   alertType: "",
+  showAlert: false,
+  friendTitle: "",
   user: user ? JSON.parse(user) : null,
   token: token,
-  friendTitle: "",
   //not currently using
   userLocation: "",
   //userList initial state -- using user as a prefix to denote full user controlled/created elements in case of separation or adding in lists belonging to outside entities. EX: Friend's movie list or curated list from a magazine/publication
-  isEditing: false,
-  insideList: "",
   activeList: [],
-  editListId: "",
-  listTitle: "",
-  userContributorList: [],
-  itemTitle: "",
-  userOwnedItems: [],
-  userCreatedItems: [],
-  totalUserCreatedItems: 0,
-  deleteItemId: "",
-
-  currentUserListItems: [],
   allUserItems: [],
-
-  //numOfPages = changing value in listController in the future. Currently hard coded to 1. Similar thing with page. But we'll update page in the future to dictate the current page/which part of of UserCreatedList array is shown to user.
-  numOfPages: 1,
-  page: 1,
+  addItemOrList: false,
+  currentUserListItems: [],
+  deleteItemId: "",
+  editListId: "",
+  insideList: "",
+  isEditing: false,
+  itemTitle: "",
+  listTitle: "",
+  totalUserCreatedItems: 0,
+  userContributorList: [],
+  userCreatedItems: [],
+  userOwnedItems: [],
 };
 
 const AppContext = React.createContext();
@@ -102,6 +99,7 @@ const AppProvider = ({ children }) => {
     },
     (error) => {
       console.log(error.response);
+      console.log(error);
       if (error.response.status === 401) {
         console.log("AUTH ERROR");
         logoutUser();
@@ -200,15 +198,26 @@ const AppProvider = ({ children }) => {
     dispatch({ type: CREATE_USER_LIST_BEGIN });
     try {
       const { listTitle } = state;
+      // console.log("listTitle inside APP CONTEXT: ");
+      // console.log(listTitle);
       await authFetch.post("/userlists", { listTitle });
+
       dispatch({ type: CREATE_USER_LIST_SUCCESS });
       dispatch({ type: CLEAR_VALUES });
     } catch (error) {
-      if (error.response.status === 401) return;
-      dispatch({
-        type: CREATE_USER_LIST_ERROR,
-        payload: { msg: error.response.data.msg },
-      });
+      // if (error.response) {
+      //   console.log(error.response.data);
+      //   console.log(error.response.status);
+      //   console.log(error.response.headers);
+      //   console.log(error.response.data);
+      // } else if (error.request) {
+      //   //The request was made but no response was received
+      //   console.log(error.request);
+      // } else {
+      //   // Something happened in setting up the request that triggered an Error
+      //   console.log("Error Message", error.message);
+      //   console.log("Error", error);
+      // }
     }
   };
 
@@ -347,6 +356,15 @@ const AppProvider = ({ children }) => {
     } catch (error) {
       console.log(error);
       console.log("logout user enter here");
+    }
+  };
+
+  const setAddItemOrList = async (status) => {
+    try {
+      dispatch({ type: SET_ADD_ITEM_OR_LIST, payload: { status } });
+    } catch (error) {
+      console.log(error);
+      console.log("error setting AddItem or List to Open or close");
     }
   };
 
@@ -569,6 +587,7 @@ const AppProvider = ({ children }) => {
         deleteUserCreatedList,
         deleteUserCreatedListItem,
         setActiveList,
+        setAddItemOrList,
         setInsideList,
         setCurrentUserListItems,
         setDeleteItemId,

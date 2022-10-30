@@ -1,9 +1,9 @@
 import React from "react";
 
-import { BrowserRouter, Route, Routes, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import {
-  Error,
   Landing,
+  NoMatch,
   Register,
   ProtectedRoute,
   SharedLayout,
@@ -21,12 +21,18 @@ function App() {
             </ProtectedRoute>
           }
         >
-          <Route path="/list" />
+          {/*  These Routes exist here and within the <SharedLayout/>*/}
+          <Route path="/list" element />
+          <Route path="/share-list" element />
+          <Route path="/add-list" element />
+          <Route path="/add-item" element />
         </Route>
 
         <Route path="/register" element={<Register />} />
+        {/* 
         <Route path="/landing" element={<Landing />} />
-        <Route path="*" element={<Error />} />
+        */}
+        <Route path="*" element={<NoMatch />} />
       </Routes>
     </BrowserRouter>
   );

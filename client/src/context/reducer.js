@@ -21,6 +21,7 @@ import {
   DELETE_USER_LIST_SUCCESS,
   SET_CURRENT_USER_LIST_ITEMS,
   //MANIPULATING LISTS/ITEMS
+  SET_ADD_ITEM_OR_LIST,
   SET_ACTIVE_LIST,
   SET_INSIDE_LIST,
   SET_DELETE_ITEM_ID,
@@ -131,7 +132,12 @@ const reducer = (state, action) => {
     };
   }
   if (action.type === GET_USER_LIST_BEGIN) {
-    return { ...state, isLoading: true, showAlert: false };
+    return {
+      ...state,
+      isLoading: true,
+      showAlert: false,
+      addItemOrList: false,
+    };
   }
   if (action.type === GET_USER_LIST_SUCCESS) {
     return {
@@ -166,10 +172,18 @@ const reducer = (state, action) => {
       alertText: "User List Item Deleted",
     };
   }
+  if (action.type === SET_ADD_ITEM_OR_LIST) {
+    return {
+      ...state,
+      addItemOrList: action.payload.status,
+    };
+  }
+
   if (action.type === SET_ACTIVE_LIST) {
     return {
       ...state,
       activeList: action.payload.newActiveList,
+      addItemOrList: false,
     };
   }
   if (action.type === SET_INSIDE_LIST) {

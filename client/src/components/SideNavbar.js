@@ -1,3 +1,7 @@
+//! OLD SIDE NAVBAR FOR DESKTOP VERSION
+//? has been migrated into the Home.js for mobile
+// changes have been done on Home and this may be used later as a side insert of sorts
+
 import { React, Fragment, useEffect, useState, useRef } from "react";
 
 import { useAppContext } from "../context/appContext";
@@ -89,8 +93,8 @@ const SideNavbar = () => {
 
   return (
     <div
-      className={`bg-gray-900 h-screen p-5 pt-8 duration-300 relative w-4/5
-      ${open ? "sm:w-4/5 md:w-4/5" : "w-4/5"} `}
+      className={`bg-gray-900 h-screen p-5 pt-8 duration-300 relative w-full
+      ${open ? "" : ""} `}
       onMouseLeave={() => setShowListTitleInput(false)}
     >
       <BsArrowLeftShort

@@ -1,14 +1,24 @@
 import { Fragment, useEffect, useState, useRef } from "react";
 
 import { useAppContext } from "../context/appContext";
-import { HiDotsHorizontal, HiPlus, HiOutlinePencil } from "react-icons/hi";
+import {
+  HiDotsHorizontal,
+  HiPlus,
+  HiOutlinePencil,
+  HiOutlineChevronLeft,
+} from "react-icons/hi";
 import { Menu, Transition } from "@headlessui/react";
+import { Link } from "react-router-dom";
+
+import FooterNav from "./FooterNav";
+import Share from "./Share";
 
 import "flowbite-react";
 
 const ActiveList = () => {
   const {
     activeList,
+    addItemOrList,
     allUserItems,
     clearAlert,
     createUserListItem,
@@ -17,6 +27,7 @@ const ActiveList = () => {
     getUserCreatedListItems,
     handleChange,
     itemTitle,
+    setAddItemOrList,
     showAlert,
   } = useAppContext();
 
@@ -86,131 +97,161 @@ const ActiveList = () => {
   );
 
   return (
-    <div className=" relative container mx-auto p-6 flex px-4 pb-8 items-start">
-      <div className="grid grid-cols-8 relative items-center justify-between w-full">
-        <div className="col-start-1 col-end-5  flex px-4 pb-8 items-start">
-          <div className=" bg-gray-300 rounded flex-no-shrink w-full p-2 mr-3 ">
-            <div className="flex justify-between py-1 items-center">
-              <h3 className="text-lg">{activeList[0].listTitle}</h3>
-              <div className="h-4 fill-current text-gray-dark cursor-pointer">
-                {/* Triple Dot Menu*/}
-                <Menu as="div" className="relative w-10 h-10 z-10">
-                  <Menu.Button className="flex items-center justify-center w-6 h-6 hover:bg-gray-400  rounded-md">
-                    <HiDotsHorizontal />
-                  </Menu.Button>
+    <div
+      // flex flex-col h-screen justify-between cause the header stick top-0 to stay above the main div
+      className="flex flex-col h-screen justify-between"
+    >
+      {/* Header Nav: Start */}
 
-                  <Transition
-                    as={Fragment}
-                    enter="transition ease-out duration-100"
-                    enterFrom="transform opacity-0 scale-95"
-                    enterTo="transform opacity-100 scale-100"
-                    leave="transition ease-in duration-75"
-                    leaveFrom="transform opacity-100 scale-100"
-                    leaveTo="transform opacity-0 scale-95"
-                  >
-                    <Menu.Items className="absolute left-0 mt-2 w-36 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      <div className="px-1 py-1 ">
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              className={`${
-                                active
-                                  ? "bg-violet-500 text-white"
-                                  : "text-gray-900"
-                              } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                            >
-                              {active ? (
-                                <EditActiveIcon
-                                  className="mr-2 h-5 w-5"
-                                  aria-hidden="true"
-                                />
-                              ) : (
-                                <EditInactiveIcon
-                                  className="mr-2 h-5 w-5"
-                                  aria-hidden="true"
-                                />
+      <header className="grid grid-rows-1 w-full text-center border-b border-grey p-4 h-14 sticky top-0 z-80">
+        {/* Setup Grid - layout later for spacing of Back, list name, share icon & more options icon w/ redirect to options page like Notion*/}
+        <Link to="/" className="row-start-1">
+          <HiOutlineChevronLeft className="mt-1 h-4 w-4" />
+        </Link>
+        <div className="row-start-1 text-center items-center justify-between w-full ">
+          {activeList[0].listTitle}
+        </div>
+        <div className="row-start-1">
+          <Link to="/share-list">Share Icon</Link>
+        </div>
+        <div className="row-start-1">... </div>
+      </header>
+      {/* Header Nav: End */}
+      <div
+        // controls opacity of rest of active list when add item/list is selected
+        className={`grid grid-flow-row auto-rows-max   p-2 m-6 h-full items-center z-0 overflow-scroll ${
+          addItemOrList && "opacity-30"
+        }`}
+        onClick={() => setAddItemOrList(false)}
+      >
+        <div className="grid relative  ">
+          <div className="items-center text-center py-1  ">
+            <h3 className="text-lg ">{activeList[0].listTitle}</h3>
+            {/* Triple Dot Menu for List: Begin*/}
+            {/*
+            <div className=" fill-current h-4 text-gray-dark cursor-pointer">
+            
+                    <Menu as="div" className="relative w-10 h-10 z-10">
+                      <Menu.Button className="flex items-center justify-center w-6 h-6 hover:bg-gray-400  rounded-md">
+                        <HiDotsHorizontal />
+                      </Menu.Button>
+
+                      <Transition
+                        as={Fragment}
+                        enter="transition ease-out duration-100"
+                        enterFrom="transform opacity-0 scale-95"
+                        enterTo="transform opacity-100 scale-100"
+                        leave="transition ease-in duration-75"
+                        leaveFrom="transform opacity-100 scale-100"
+                        leaveTo="transform opacity-0 scale-95"
+                      >
+                        <Menu.Items className="absolute left-0 mt-2 w-36 origin-top-left divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
+                          <div className="px-1 py-1 ">
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${
+                                    active
+                                      ? "bg-violet-500 text-white"
+                                      : "text-gray-900"
+                                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                >
+                                  {active ? (
+                                    <EditActiveIcon
+                                      className="mr-2 h-5 w-5"
+                                      aria-hidden="true"
+                                    />
+                                  ) : (
+                                    <EditInactiveIcon
+                                      className="mr-2 h-5 w-5"
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                  Edit
+                                </button>
                               )}
-                              Edit
-                            </button>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              className={`${
-                                active
-                                  ? "bg-red-800 text-white"
-                                  : "text-gray-900"
-                              } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                              onClick={() => console.log("sharing item")}
-                            >
-                              {active ? (
-                                <ShareActiveIcon
-                                  className="mr-2 h-5 w-5"
-                                  aria-hidden="true"
-                                />
-                              ) : (
-                                <ShareInactiveIcon
-                                  className="mr-2 h-5 w-5"
-                                  aria-hidden="true"
-                                />
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${
+                                    active
+                                      ? "bg-red-800 text-white"
+                                      : "text-gray-900"
+                                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                  onClick={() => console.log("sharing item")}
+                                >
+                                  {active ? (
+                                    <ShareActiveIcon
+                                      className="mr-2 h-5 w-5"
+                                      aria-hidden="true"
+                                    />
+                                  ) : (
+                                    <ShareInactiveIcon
+                                      className="mr-2 h-5 w-5"
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                  Share
+                                </button>
                               )}
-                              Share
-                            </button>
-                          )}
-                        </Menu.Item>
-                        <Menu.Item>
-                          {({ active }) => (
-                            <button
-                              className={`${
-                                active
-                                  ? "bg-red-800 text-white"
-                                  : "text-gray-900"
-                              } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
-                              onClick={() => console.log(activeList[0]._id)}
-                            >
-                              {active ? (
-                                <DeleteActiveIcon
-                                  className="mr-2 h-5 w-5  text-violet-400"
-                                  aria-hidden="true"
-                                />
-                              ) : (
-                                <DeleteInactiveIcon
-                                  className="mr-2 h-5 w-5 text-violet-400"
-                                  aria-hidden="true"
-                                />
+                            </Menu.Item>
+                            <Menu.Item>
+                              {({ active }) => (
+                                <button
+                                  className={`${
+                                    active
+                                      ? "bg-red-800 text-white"
+                                      : "text-gray-900"
+                                  } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                                  onClick={() => console.log(activeList[0]._id)}
+                                >
+                                  {active ? (
+                                    <DeleteActiveIcon
+                                      className="mr-2 h-5 w-5  text-violet-400"
+                                      aria-hidden="true"
+                                    />
+                                  ) : (
+                                    <DeleteInactiveIcon
+                                      className="mr-2 h-5 w-5 text-violet-400"
+                                      aria-hidden="true"
+                                    />
+                                  )}
+                                  Delete
+                                </button>
                               )}
-                              Delete
-                            </button>
-                          )}
-                        </Menu.Item>
-                      </div>
-                    </Menu.Items>
-                  </Transition>
-                </Menu>
-              </div>
+                            </Menu.Item>
+                          </div>
+                        </Menu.Items>
+                      </Transition>
+                    </Menu>
+                     
             </div>
-            {filteredListByParentId.length >= 1 ? (
-              filteredListByParentId.map((item, index) => (
-                <div>
-                  <div
-                    className={`grid grid-cols-4 relative items-center justify-center gap-2 bg-white  p-2 rounded mt-1 border-b border-gray cursor-pointer hover:bg-gray-200 `}
-                    index={index}
-                    //put key in just to remove annoying error notification
-                    key={index}
-                    onMouseEnter={() => {
-                      setHover(true);
-                      setItemIndex(index);
-                    }}
-                    onMouseLeave={() => {
-                      setHover(false);
-                      setItemIndex("");
-                    }}
-                  >
-                    <div className="col-start-1 col-span-3 ">
-                      {item.itemTitle}
-                    </div>
-                    {/* Basic Item + Hover Shown*/}
+                         */}
+            {/* Triple Dot Menu for List: End*/}
+          </div>
+          {filteredListByParentId.length >= 1 ? (
+            filteredListByParentId.map((item, index) => (
+              <div>
+                <div
+                  className={`grid grid-cols-4 font-semibold relative gap-2 bg-white  p-2  mt-1 border-2 border-black border-solid rounded-lg cursor-pointer z-0 hover:bg-gray-200 `}
+                  index={index}
+                  //put key in just to remove annoying error notification
+                  key={index}
+                  // onMouseEnter={() => {
+                  //   setHover(true);
+                  //   setItemIndex(index);
+                  // }}
+                  // onMouseLeave={() => {
+                  //   setHover(false);
+                  //   setItemIndex("");
+                  // }}
+                >
+                  <div className="col-start-1 col-span-3 ">
+                    {item.itemTitle}
+                  </div>
+                  {/* Basic Item + Hover Shown Item list: Begin*/}
+                  {/* 
                     {hover && index === itemIndex ? (
                       <div className="col-start-4 col-end-5  col-span-1 absolute flex  right-0 ">
                         <Menu
@@ -296,164 +337,90 @@ const ActiveList = () => {
                     ) : (
                       ""
                     )}
-                  </div>
+                    */}
+                  {/* Basic Item + Hover Shown Item list: End*/}
                 </div>
-              ))
-            ) : (
-              <div>No items in this list. Please add some below</div>
-            )}
-            <div className="my-8  text-gray-dark rounded items-center">
-              <span
-                className={`flex items-center justify-center  bg-white p-2 rounded mt-8 border-gray cursor-pointer  hover:bg-gray-400 ${
-                  showTextInput && "hidden"
-                }`}
-                onClick={() => {
-                  setShowTextInput(!showTextInput);
-                  setShowItemOptions(false);
-                }}
-              >
-                Add an item...
-              </span>
+              </div>
+            ))
+          ) : (
+            <div>No items in this list. Please add some below</div>
+          )}
+          <div className="my-8  text-gray-dark rounded items-center">
+            <span
+              className={`flex items-center justify-center  bg-blue-400  p-2 mt-8 border-2 border-black border-solid rounded-lg cursor-pointer  hover:bg-gray-400 ${
+                showTextInput && "hidden"
+              }`}
+              onClick={() => {
+                setShowTextInput(!showTextInput);
+                setShowItemOptions(false);
+              }}
+            >
+              Add an item...
+            </span>
 
-              <span className={` ${!showTextInput && "hidden"}`}>
-                <div>
-                  <input
-                    type="text"
-                    id="itemTitle"
-                    className="block h-20 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                    placeholder="Enter a title for this card..."
-                    name="itemTitle"
-                    value={itemTitle}
-                    onChange={handleItemInput}
-                    required
-                  />
-                  <span className="mt-6 flex relative items-center justify-center ">
-                    <button
-                      className="text-white absolute left-0    bg-green-500 hover:bg-green-800focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center "
-                      onClick={handleSubmit}
-                    >
-                      Add Item
-                    </button>
-                    <button
-                      className="text-white absolute right-0 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  "
-                      onClick={() => setShowTextInput(!showTextInput)}
-                    >
-                      Cancel
-                    </button>
-                  </span>
-                </div>
-              </span>
-            </div>
+            <span className={` ${!showTextInput && "hidden"}`}>
+              <div>
+                <input
+                  type="text"
+                  id="itemTitle"
+                  className="block h-20 w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500  p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  placeholder="Enter a title for this card..."
+                  name="itemTitle"
+                  value={itemTitle}
+                  onChange={handleItemInput}
+                  required
+                />
+                <span className="mt-6 flex relative items-center justify-center ">
+                  <button
+                    className="text-white absolute left-0    bg-green-500 hover:bg-green-800focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center "
+                    onClick={handleSubmit}
+                  >
+                    Add Item
+                  </button>
+                  <button
+                    className="text-white absolute right-0 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  "
+                    onClick={() => setShowTextInput(!showTextInput)}
+                  >
+                    Cancel
+                  </button>
+                </span>
+              </div>
+            </span>
           </div>
         </div>
       </div>
+      {/* AddItemOrList Component Start*/}
+      {addItemOrList ? (
+        <div className="absolute flex bottom-16 right-2 z-10 bg-white">
+          <ul className=" grid gap-y-4">
+            <button>
+              <Link to="/add-list" onClick={() => setAddItemOrList(false)}>
+                <li className="flex flex-row justify-center items-center z-10 bg-white-900 h-16 w-32 border-4 ">
+                  <p className="flex flex-row z-10">Add List</p>
+                </li>
+              </Link>
+            </button>
+            <button>
+              <Link to="/add-item" onClick={() => setAddItemOrList(false)}>
+                <li className=" flex justify-center items-center h-16 w-32 border-4">
+                  <p className="flex flex-row ">Add Item</p>
+                </li>
+              </Link>
+            </button>
+          </ul>
+        </div>
+      ) : (
+        <div></div>
+      )}
+      {/* AddItemOrList Component End*/}
+      {/* Footer: Start*/}
+      {/* Look into Changing the Height of the Nav Item */}
+      <div className="flex sticky bottom-0 w-full text-center border-t border-grey items-center z-10 bg-white">
+        <FooterNav />
+      </div>
+      {/* Footer: End*/}
     </div>
   );
 };
-
-function EditInactiveIcon(props) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 13V16H7L16 7L13 4L4 13Z"
-        fill="#EDE9FE"
-        stroke="#252629"
-        strokeWidth="2"
-      />
-    </svg>
-  );
-}
-
-function EditActiveIcon(props) {
-  return (
-    <svg
-      {...props}
-      viewBox="0 0 20 20"
-      fill="none"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path
-        d="M4 13V16H7L16 7L13 4L4 13Z"
-        fill="#252629"
-        stroke="#252629"
-        strokeWidth="2"
-      />
-    </svg>
-  );
-}
-
-function DeleteInactiveIcon(props) {
-  return (
-    <svg
-      class="h-4 w-4 mr-2 text-black-900"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-      />
-    </svg>
-  );
-}
-
-function DeleteActiveIcon(props) {
-  return (
-    <svg
-      class="h-4 w-4 mr-2 text-black-900"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        stroke-linecap="round"
-        stroke-linejoin="round"
-        stroke-width="2"
-        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-      />
-    </svg>
-  );
-}
-
-function ShareActiveIcon(props) {
-  return (
-    <svg
-      class="h-4 w-4 mr-2 text-black-900"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      {" "}
-      <polygon points="3 11 22 2 13 21 11 13 3 11" />
-    </svg>
-  );
-}
-function ShareInactiveIcon(props) {
-  return (
-    <svg
-      class="h-4 w-4 mr-2 text-black-900"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      {" "}
-      <polygon points="3 11 22 2 13 21 11 13 3 11" />
-    </svg>
-  );
-}
 
 export default ActiveList;

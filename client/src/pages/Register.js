@@ -90,7 +90,13 @@ const Register = () => {
           <input type="hidden" name="remember" defaultValue="true" />
 
           <div className="-space-y-px rounded-md shadow-sm">
-            <div>{showAlert && <Alert />}</div>
+            <div className="mt-2 text-center">
+              {showAlert && (
+                <div className="group relative flex w-full justify-center rounded-lg border border-transparent text-white bg-indigo-600 py-2 px-4 ">
+                  <Alert />
+                </div>
+              )}
+            </div>
           </div>
 
           <div>
@@ -129,7 +135,7 @@ const Register = () => {
                 onChange={handleChange}
               />
             </div>
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between  mt-2">
               <div className="flex items-center">
                 <input
                   id="remember-me"
@@ -156,7 +162,7 @@ const Register = () => {
             </div>
             <div>
               <button
-                className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                className="group relative flex w-full justify-center rounded-md border border-transparent bg-indigo-600 py-2 px-4 mt-8 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
                 type="submit"
               >
                 {values.isMember ? "Login" : "Register"}

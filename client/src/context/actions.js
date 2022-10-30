@@ -44,6 +44,9 @@ export const DELETE_USER_LIST_ITEM_SUCCESS = "DELETE_USER_LIST_ITEM_SUCCESS";
 export const SET_ACTIVE_LIST = "SET_ACTIVE_LIST";
 export const SET_INSIDE_LIST = "SET_INSIDE_LIST";
 
+//Adding Item/list Pop up
+export const SET_ADD_ITEM_OR_LIST = "SET_ADD_ITEM_OR_LIST";
+
 //ITEMS
 
 export const SET_DELETE_ITEM_ID = "SET_DELETE_ITEM_ID";
