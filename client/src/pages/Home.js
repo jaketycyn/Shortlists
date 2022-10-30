@@ -269,8 +269,9 @@ const Home = () => {
               {/* Display UserClassicLists Module: End*/}
             </div>
 
-            {/* Display UserReceivedSocialLists Module: Begin*/}
-            <div // controls opacity of rest of active list when add item/list is selected
+
+            {/* Display UserReceivedSocialLists Module: Begin}
+              <div // controls opacity of rest of active list when add item/list is selected
               className={`flex relative container mx-auto p-6 px-4 pb-8 items-start z-0  h-screen w-full ${
                 addItemOrList && "opacity-30"
               }`}
@@ -420,7 +421,7 @@ const Home = () => {
                 </ul>
               )}
             </div>
-            {/* Display UserReceivedSocialLists Module: End*/}
+            { Display UserReceivedSocialLists Module: End */}
 
             {/* Add List Module*/}
             {/*
