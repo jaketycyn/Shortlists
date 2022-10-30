@@ -111,7 +111,7 @@ const Home = () => {
   );
 
   return (
-    <div className="flex flex-col h-screen justify-between gap-2  ">
+    <div className="flex flex-col h-screen justify-between">
       <div className="" onClick={() => setAddItemOrList(false)}>
         <header className="flex flex-col absolute top-0 w-full h-14 mb-2  text-center items-center border-2 z-10 bg-white  pt-4">
           <h1 className="font-semibold">Shortlists</h1>

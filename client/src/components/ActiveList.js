@@ -33,6 +33,7 @@ const ActiveList = () => {
 
   const [itemIndex, setItemIndex] = useState("");
   const [hover, setHover] = useState(false);
+  const [hasFocus, setFocus] = useState(false);
   const [showTextInput, setShowTextInput] = useState(false);
   const [showItemOptions, setShowItemOptions] = useState(false);
 
@@ -364,6 +365,8 @@ const ActiveList = () => {
                   name="itemTitle"
                   value={itemTitle}
                   onChange={handleItemInput}
+                  onFocus={() => setFocus(true)}
+                  onBlur={() => setFocus(false)}
                   required
                 />
                 <span className="mt-6 flex relative items-center justify-center ">
@@ -385,7 +388,9 @@ const ActiveList = () => {
           </div>
         </div>
       </div>
+
       {/* AddItemOrList Component Start*/}
+
       {addItemOrList ? (
         <div className="absolute flex bottom-16 right-2 z-10 bg-white">
           <ul className=" grid gap-y-4">
@@ -409,11 +414,15 @@ const ActiveList = () => {
         <div></div>
       )}
       {/* AddItemOrList Component End*/}
+
       {/* Footer: Start*/}
       {/* Look into Changing the Height of the Nav Item */}
-      <div className="flex absolute bottom-0 w-full text-center border-t border-grey items-center z-10 bg-white">
-        <FooterNav />
-      </div>
+      {!hasFocus ? (
+        <div className="flex absolute bottom-0 w-full text-center border-t border-grey items-center z-10 bg-white">
+          <FooterNav />
+        </div>
+      ) : null}
+
       {/* Footer: End*/}
     </div>
   );
