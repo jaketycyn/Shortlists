@@ -2,6 +2,7 @@ import React, { useReducer, useContext } from "react";
 import {
   CLEAR_ALERT,
   CLEAR_VALUES,
+  CLEAR_ITEM_VALUE,
   DISPLAY_ALERT,
   SETUP_USER_BEGIN,
   SETUP_USER_SUCCESS,
@@ -121,6 +122,9 @@ const AppProvider = ({ children }) => {
 
   const clearValues = () => {
     dispatch({ type: CLEAR_VALUES });
+  };
+  const clearItemValue = () => {
+    dispatch({ type: CLEAR_ITEM_VALUE });
   };
 
   const addUserToLocalStorage = ({ user, token }) => {
@@ -581,6 +585,7 @@ const AppProvider = ({ children }) => {
         ...state,
         clearAlert,
         clearValues,
+        clearItemValue,
         displayAlert,
         setupUser,
         logoutUser,

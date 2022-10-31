@@ -21,6 +21,7 @@ const ActiveList = () => {
     addItemOrList,
     allUserItems,
     clearAlert,
+    clearItemValue,
     createUserListItem,
     deleteUserCreatedListItem,
     displayAlert,
@@ -62,6 +63,12 @@ const ActiveList = () => {
     const value = e.target.value;
     // console.log(`${name}: ${value}`)
     handleChange({ name, value });
+  };
+
+  const clearItemInput = () => {
+    setShowTextInput(!showTextInput);
+
+    clearItemValue();
   };
 
   const handleSubmit = (e) => {
@@ -380,7 +387,7 @@ const ActiveList = () => {
                   </button>
                   <button
                     className="text-white absolute right-0 bg-red-700 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2.5 text-center  "
-                    onClick={() => setShowTextInput(!showTextInput)}
+                    onClick={() => clearItemInput()}
                   >
                     Cancel
                   </button>

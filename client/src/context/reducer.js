@@ -2,6 +2,7 @@ import {
   DISPLAY_ALERT,
   CLEAR_ALERT,
   CLEAR_VALUES,
+  CLEAR_ITEM_VALUE,
   //USER
   SETUP_USER_BEGIN,
   SETUP_USER_SUCCESS,
@@ -70,6 +71,10 @@ const reducer = (state, action) => {
       ...state,
       ...initialState,
     };
+  }
+
+  if (action.type === CLEAR_ITEM_VALUE) {
+    return { ...state, itemTitle: "" };
   }
 
   if (action.type === SETUP_USER_BEGIN) {

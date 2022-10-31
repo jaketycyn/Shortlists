@@ -1,6 +1,7 @@
 export const DISPLAY_ALERT = "SHOW_ALERT";
 export const CLEAR_ALERT = "CLEAR_ALERT";
 export const CLEAR_VALUES = "CLEAR_VALUES";
+export const CLEAR_ITEM_VALUE = "CLEAR_ITEM_VALUE";
 
 //removed login/register and combined into SETUP
 
