@@ -367,6 +367,8 @@ const ActiveList = () => {
                   onChange={handleItemInput}
                   onFocus={() => setFocus(true)}
                   onBlur={() => setFocus(false)}
+                  onTouchCancel={() => setFocus(false)}
+                  onTouchEnd={() => setFocus(false)}
                   required
                 />
                 <span className="mt-6 flex relative items-center justify-center ">
