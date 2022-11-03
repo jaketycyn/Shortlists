@@ -21,7 +21,7 @@ const AddList = () => {
     setAddItemOrList,
   } = useAppContext();
 
-  const [showToast, setShowToast] = useState(false);
+  const [showToast, setShowToast] = useState(true);
   //use navigate onClick or at the end of a function firing to redirect
   const navigate = useNavigate();
 
@@ -75,19 +75,21 @@ const AddList = () => {
           className="relative mt-2 h-full"
           //onClick={() => setAddItemOrList(false)}
         >
-          {/* Toast: Start*/}
-          {showToast ? (
-            <div
-              id="toast-simple"
-              class="flex items-center p-4 space-x-4 w-60 h-14 text-black bg-green-400 rounded-lg divide-x divide-gray-200 shadow"
-              role="alert"
-            >
-              <HiPlus />
-              <div class="pl-6 font-normal">List Created</div>
-            </div>
-          ) : (
-            <div></div>
-          )}
+          <div className="flex flex-col items-center">
+            {/* Toast: Start*/}
+            {showToast ? (
+              <div
+                id="toast-simple"
+                class="flex items-center p-4 space-x-4 w-60 h-14 text-black bg-green-400 rounded-lg divide-x divide-gray-200 shadow"
+                role="alert"
+              >
+                <HiPlus />
+                <div class="pl-6 font-normal">List Created</div>
+              </div>
+            ) : (
+              <div></div>
+            )}
+          </div>
           {/* Toast: End */}
           <div // controls opacity of rest of active list when add item/list is selected
             className={`flex flex-row relative container mx-auto p-6  px-4 pb-8 items-start h-full  file:${

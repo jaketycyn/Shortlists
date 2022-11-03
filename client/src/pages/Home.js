@@ -173,7 +173,7 @@ const Home = () => {
                         to="/list"
                         key={index}
                         onClick={() => goInsideList(list._id)}
-                        className="w-full h-full bg-yellow-400 p-2"
+                        className="w-full h-full p-2"
                       >
                         {list.listTitle}
                       </Link>
@@ -182,7 +182,7 @@ const Home = () => {
                         as="div"
                         className=" flex relative items-center justify-center "
                       >
-                        <Menu.Button className="flex items-center justify-center w-8 h-8 bg-purple-400  hover:bg-gray-900 hover:text-blue-300 rounded-md z-0">
+                        <Menu.Button className="flex items-center justify-center w-8 h-8s  hover:bg-gray-900 hover:text-blue-300 rounded-md z-0">
                           <HiOutlineDotsVertical className="" />
                         </Menu.Button>
 
@@ -286,7 +286,7 @@ const Home = () => {
                           </Menu.Items>
                         </Transition>
                       </Menu>
-                      <div className="flex items-center justify-center  p-2 hover:bg-gray-900 h-8 w-8 bg-red-400 rounded-md z-0">
+                      <div className="flex items-center justify-center  p-2 hover:bg-gray-900 h-8 w-8 rounded-md z-0">
                         <HiPlus
                           className="h-4 w-4"
                           onClick={() => console.log("add item")}
